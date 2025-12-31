@@ -94,7 +94,7 @@ Adding description to Product or new tables.
 
 ```bash
 # Clone repository
-git clone https://github.com/<your-username>/inventory-management-system.git
+git clone https://github.com/HazemMarzougui/inventory-management-system.git
 cd inventory-management-system
 Configure MySQL database:
 
