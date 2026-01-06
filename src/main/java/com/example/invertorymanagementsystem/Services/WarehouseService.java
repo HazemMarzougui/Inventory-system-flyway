@@ -8,22 +8,50 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
 @Service
 @Transactional
 public class WarehouseService {
+
     private final WarehouseRepository warehouseRepository;
 
     public WarehouseService(WarehouseRepository warehouseRepository) {
         this.warehouseRepository = warehouseRepository;
     }
 
+    public List<WarehouseDTO> getAllWarehouses() {
+        return warehouseRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
+    }
+
+    public WarehouseDTO getWarehouseById(Integer id) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Warehouse not found with id " + id));
+        return convertToDTO(warehouse);
+    }
+
     public WarehouseDTO createWarehouse(WarehouseDTO dto) {
         Warehouse warehouse = new Warehouse();
         warehouse.setName(dto.getName());
         warehouse.setLocation(dto.getLocation());
-        Warehouse saved = warehouseRepository.save(warehouse);
-        return convertToDTO(saved);
+        return convertToDTO(warehouseRepository.save(warehouse));
+    }
+
+    public WarehouseDTO updateWarehouse(Integer id, WarehouseDTO dto) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Warehouse not found with id " + id));
+
+        warehouse.setName(dto.getName());
+        warehouse.setLocation(dto.getLocation());
+        return convertToDTO(warehouseRepository.save(warehouse));
+    }
+
+    public void deleteWarehouse(Integer id) {
+        if (!warehouseRepository.existsById(id)) {
+            throw new RuntimeException("Warehouse not found with id " + id);
+        }
+        warehouseRepository.deleteById(id);
     }
 
     private WarehouseDTO convertToDTO(Warehouse warehouse) {

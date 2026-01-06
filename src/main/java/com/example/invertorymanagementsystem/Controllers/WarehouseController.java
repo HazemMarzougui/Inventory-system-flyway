@@ -1,5 +1,5 @@
 package com.example.invertorymanagementsystem.Controllers;
-import com.example.invertorymanagementsystem.Entities.Warehouse;
+import com.example.invertorymanagementsystem.Dtos.WarehouseDTO;
 import com.example.invertorymanagementsystem.Services.WarehouseService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,23 +15,25 @@ public class WarehouseController {
     }
 
     @GetMapping
-    public List<Warehouse> getAllWarehouses() {
+    public List<WarehouseDTO> getAllWarehouses() {
         return warehouseService.getAllWarehouses();
     }
 
     @GetMapping("/{id}")
-    public Warehouse getWarehouse(@PathVariable Integer id) {
-        return warehouseService.getWarehouseById(id).orElseThrow(() -> new RuntimeException("Warehouse not found"));
+    public WarehouseDTO getWarehouse(@PathVariable Integer id) {
+        return warehouseService.getWarehouseById(id);
     }
 
     @PostMapping
-    public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
-        return warehouseService.createWarehouse(warehouse);
+    public WarehouseDTO createWarehouse(@RequestBody WarehouseDTO dto) {
+        return warehouseService.createWarehouse(dto);
     }
 
     @PutMapping("/{id}")
-    public Warehouse updateWarehouse(@PathVariable Integer id, @RequestBody Warehouse warehouse) {
-        return warehouseService.updateWarehouse(id, warehouse);
+    public WarehouseDTO updateWarehouse(
+            @PathVariable Integer id,
+            @RequestBody WarehouseDTO dto) {
+        return warehouseService.updateWarehouse(id, dto);
     }
 
     @DeleteMapping("/{id}")
