@@ -1,13 +1,15 @@
 package com.example.invertorymanagementsystem.Services;
 
+import com.example.invertorymanagementsystem.Dtos.SupplierDTO;
 import com.example.invertorymanagementsystem.Entities.Supplier;
 import com.example.invertorymanagementsystem.Repositories.SupplierRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional; // Spring Import
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SupplierService {
 
     private final SupplierRepository supplierRepository;
@@ -16,27 +18,52 @@ public class SupplierService {
         this.supplierRepository = supplierRepository;
     }
 
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<SupplierDTO> getAllSuppliers() {
+        return supplierRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Supplier> getSupplierById(Integer id) {
-        return supplierRepository.findById(id);
+    @Transactional(readOnly = true)
+    public SupplierDTO getSupplierById(Integer id) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found with ID: " + id));
+        return convertToDTO(supplier);
     }
 
-    public Supplier createSupplier(Supplier supplier) {
-        return supplierRepository.save(supplier);
+    public SupplierDTO createSupplier(SupplierDTO dto) {
+        Supplier supplier = new Supplier();
+        supplier.setName(dto.getName());
+        supplier.setContact(dto.getContact());
+
+        Supplier saved = supplierRepository.save(supplier);
+        return convertToDTO(saved);
     }
 
-    public Supplier updateSupplier(Integer id, Supplier updatedSupplier) {
-        return supplierRepository.findById(id).map(supplier -> {
-            supplier.setName(updatedSupplier.getName());
-            supplier.setContact(updatedSupplier.getContact());
-            return supplierRepository.save(supplier);
-        }).orElseThrow(() -> new RuntimeException("Supplier not found"));
+    public SupplierDTO updateSupplier(Integer id, SupplierDTO dto) {
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found with ID: " + id));
+
+        supplier.setName(dto.getName());
+        supplier.setContact(dto.getContact());
+
+        return convertToDTO(supplierRepository.save(supplier));
     }
 
     public void deleteSupplier(Integer id) {
+        if (!supplierRepository.existsById(id)) {
+            throw new RuntimeException("Cannot delete: Supplier not found");
+        }
         supplierRepository.deleteById(id);
+    }
+
+    private SupplierDTO convertToDTO(Supplier supplier) {
+        SupplierDTO dto = new SupplierDTO();
+        dto.setId(supplier.getId());
+        dto.setName(supplier.getName());
+        dto.setContact(supplier.getContact());
+        dto.setCreatedAt(supplier.getCreatedAt());
+        return dto;
     }
 }

@@ -26,10 +26,18 @@ public class StockMovement {
     @ManyToOne
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
-
     private Integer quantity;
 
     private LocalDateTime transactionDate = LocalDateTime.now();
 
-    private String status = "pending"; // pending, completed, canceled
+    @Enumerated(EnumType.STRING)
+    private Stockstatus status;
+
+    @Column(name= "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

@@ -1,42 +1,37 @@
 package com.example.invertorymanagementsystem.Services;
 
+import com.example.invertorymanagementsystem.Dtos.WarehouseDTO;
 import com.example.invertorymanagementsystem.Entities.Warehouse;
 import com.example.invertorymanagementsystem.Repositories.WarehouseRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class WarehouseService {
-
     private final WarehouseRepository warehouseRepository;
 
     public WarehouseService(WarehouseRepository warehouseRepository) {
         this.warehouseRepository = warehouseRepository;
     }
 
-    public List<Warehouse> getAllWarehouses() {
-        return warehouseRepository.findAll();
+    public WarehouseDTO createWarehouse(WarehouseDTO dto) {
+        Warehouse warehouse = new Warehouse();
+        warehouse.setName(dto.getName());
+        warehouse.setLocation(dto.getLocation());
+        Warehouse saved = warehouseRepository.save(warehouse);
+        return convertToDTO(saved);
     }
 
-    public Optional<Warehouse> getWarehouseById(Integer id) {
-        return warehouseRepository.findById(id);
-    }
-
-    public Warehouse createWarehouse(Warehouse warehouse) {
-        return warehouseRepository.save(warehouse);
-    }
-
-    public Warehouse updateWarehouse(Integer id, Warehouse updatedWarehouse) {
-        return warehouseRepository.findById(id).map(warehouse -> {
-            warehouse.setName(updatedWarehouse.getName());
-            warehouse.setLocation(updatedWarehouse.getLocation());
-            return warehouseRepository.save(warehouse);
-        }).orElseThrow(() -> new RuntimeException("Warehouse not found"));
-    }
-
-    public void deleteWarehouse(Integer id) {
-        warehouseRepository.deleteById(id);
+    private WarehouseDTO convertToDTO(Warehouse warehouse) {
+        WarehouseDTO dto = new WarehouseDTO();
+        dto.setId(warehouse.getId());
+        dto.setName(warehouse.getName());
+        dto.setLocation(warehouse.getLocation());
+        dto.setCreatedAt(warehouse.getCreatedAt());
+        return dto;
     }
 }
