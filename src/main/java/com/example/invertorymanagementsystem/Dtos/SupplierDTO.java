@@ -7,8 +7,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Data
-@Getter
-@Setter
 public class SupplierDTO {
     private Integer id;
     private String name;

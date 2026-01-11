@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +32,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name= "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
     private boolean enabled = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -41,5 +45,8 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // getters & setters
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

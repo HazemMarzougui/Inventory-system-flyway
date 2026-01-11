@@ -1,20 +1,29 @@
 package com.example.invertorymanagementsystem.Dtos;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Data
-@Getter
-@Setter
 public class StockMovementDTO {
+
     private Integer id;
+
+    @NotNull(message = "Product ID is required")
     private Integer productId;
+
+    @NotNull(message = "Warehouse ID is required")
     private Integer warehouseId;
+
+    @NotNull(message = "Quantity is required")
+    @Positive(message = "Quantity must be positive")
     private Integer quantity;
-    private String transactionDate;
+
+    @NotBlank(message = "Status is required")
     private String status;
+
     private LocalDateTime createdAt;
 }

@@ -1,0 +1,657 @@
+{
+	"info": {
+		"_postman_id": "c1e76a86-668a-4a8f-84df-b61fa9012247",
+		"name": "Inventory Management API",
+		"description": "# Inventory Management API\n\n## Overview\n\nA complete inventory management system with RBAC, stock tracking, and warehouse management.\n\n## Features\n\n- 🔐 **Role-Based Access Control** (Admin/Staff roles)\n    \n- 📦 **Product Management** - Create, read, update products\n    \n- 🏬 **Warehouse Management** - Multiple warehouse support\n    \n- 🤝 **Supplier Management** - Track suppliers\n    \n- 🔄 **Stock Movements** - IN/OUT transactions\n    \n- 📊 **Real-time Inventory** - Snapshot-based stock tracking\n    \n- ⚡ **Optimized Queries** - Database indexes for performance\n    \n\n## Authentication\n\nAll endpoints (except login) require JWT token in Authorization header:\n\n## User Roles\n\n1. **ADMIN** - Full access to all endpoints\n    \n2. **STAFF** - Limited access (no admin endpoints)\n    \n\n## Collection Structure\n\nThis collection follows a realistic workflow:\n\n1. **Authentication** - Get JWT tokens for admin and staff\n    \n2. **RBAC Tests** - Verify role-based permissions\n    \n3. **Setup** - Create products, warehouses, suppliers\n    \n4. **Operations** - Perform stock movements (IN/OUT)\n    \n5. **Reporting** - View inventory snapshots\n    \n\n## Environment Variables\n\nRequired variables in your environment:\n\n- `base_url` - API base URL (e.g., [http://localhost:8080](http://localhost:8080))\n    \n- `admin_token` - Auto-populated from admin login\n    \n- `staff_token` - Auto-populated from staff login\n    \n\n## Testing Workflow\n\nRun this collection in sequence to test:\n\n1. Login as admin → Get `admin_token`\n    \n2. Login as staff → Get `staff_token`\n    \n3. Verify RBAC: Staff cannot access admin endpoints (403)\n    \n4. Create test data (products, warehouses, suppliers)\n    \n5. Perform stock movements\n    \n6. Verify inventory updates\n    \n\n## Business Logic Validated\n\n✅ Stock cannot go negative  \n✅ Real-time inventory updates  \n✅ Transaction history tracking  \n✅ Warehouse-specific stock levels  \n✅ Supplier tracking for IN movements  \n✅ RBAC enforcement on all endpoints\n\n## API Endpoints Covered\n\n| Method | Endpoint | Description | Access |\n| --- | --- | --- | --- |\n| POST | `/api/auth/login` | Get JWT token | Public |\n| POST | `/api/products` | Create product | Admin/Staff |\n| POST | `/api/warehouses` | Create warehouse | Admin/Staff |\n| POST | `/api/suppliers` | Create supplier | Admin/Staff |\n| POST | `/api/stock-movements` | Stock transaction | Admin/Staff |\n| GET | `/api/inventory/stock-levels` | All stock levels | Admin/Staff |\n| GET | `/api/admin/users` | List users | Admin only |\n\n## Database Features Demonstrated\n\n- **Flyway migrations** for schema versioning\n    \n- **Snapshot table** for real-time inventory\n    \n- **Database indexes** for optimized queries\n    \n- **Transaction management** for data integrity\n    \n- **JPA auditing** with createdAt/updatedAt\n    \n\n## Prerequisites\n\n1. Spring Boot application running\n    \n2. Database configured (PostgreSQL/MySQL)\n    \n3. Users created in database:\n    \n    - admin_user / AdminPass123 (ROLE_ADMIN)\n        \n    - staff_user / StaffPass123 (ROLE_STAFF)\n        \n\n## How to Run\n\n1. Set `base_url` in environment\n    \n2. Run collection in sequence using Collection Runner\n    \n3. Check test results for validation\n    \n\n---\n\n**Created by:** MARZOUGUI Hazem  \n**Date:** 1/12/2026  \n**Version:** 1.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42964468"
+	},
+	"item": [
+		{
+			"name": "🔐 Auth",
+			"item": [
+				{
+					"name": "Login (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse response\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// Save token to environment variable\r",
+									"pm.environment.set(\"admin_token\", jsonData.token);\r",
+									"\r",
+									"// Tests\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response has token\", function () {\r",
+									"    pm.expect(jsonData).to.have.property('token');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin_user\",\r\n    \"password\": \"AdminPass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (Staff)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"pm.environment.set(\"staff_token\", jsonData.token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"staff_user1\",\r\n  \"password\": \"StaffPass123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "👤 RBAC Tests",
+			"item": [
+				{
+					"name": "Staff access admin endpoint (403)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Staff gets 403 Forbidden\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{staff_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin access admin endpoint (200)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Admin gets 200 OK\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📦 Products",
+			"item": [
+				{
+					"name": "Create product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Product created successfully\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    const response = pm.response.json();\r",
+									"    pm.environment.set(\"product_id\", response.id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Laptop Pro X\",\r\n  \"price\": 3500,\r\n  \"category\": \"Electronics\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🏬 Warehouses",
+			"item": [
+				{
+					"name": "Create warehouse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Warehouse created successfully\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    const response = pm.response.json();\r",
+									"    pm.environment.set(\"warehouse_id\", response.id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Central Warehouse\",\r\n  \"location\": \"Tunis\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/warehouses",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"warehouses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🤝 Suppliers",
+			"item": [
+				{
+					"name": "Create supplier",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Supplier created successfully\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    const response = pm.response.json();\r",
+									"    pm.environment.set(\"supplier_id\", response.id);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"TechSupplier Ltd\",\r\n  \"contact\": \"tech@supplier.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/suppliers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all suppliers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/suppliers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "🔄 Stock Movements",
+			"item": [
+				{
+					"name": "IN movement",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Stock IN movement successful\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{product_id}},\r\n  \"warehouseId\": {{warehouse_id}},\r\n  \"supplierId\": {{supplier_id}},\r\n  \"quantity\": 200,\r\n  \"status\": \"IN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock-movements",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock-movements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OUT movement",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{product_id}},\r\n  \"warehouseId\": {{warehouse_id}},\r\n  \"quantity\": 50,\r\n  \"status\": \"OUT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/stock-movements",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"stock-movements"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📊 Inventory Snapshot",
+			"item": [
+				{
+					"name": "Get all stock levels",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/inventory/stock-levels",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory",
+								"stock-levels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by warehouse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/inventory/warehouse/{{warehouse_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory",
+								"warehouse",
+								"{{warehouse_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/inventory/product/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory",
+								"product",
+								"{{product_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"// Collection-level pre-request script\r",
+					"console.log(\"Running request in: \" + pm.request.name);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

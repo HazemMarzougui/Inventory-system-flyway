@@ -58,6 +58,45 @@ public class UserService {
         return toDTO(saved);
     }
 
+
+    /// ADMIN ENDPOINT - CREATE STAFF USER
+    public UserDTO createStaff(UserDTO dto) {
+
+        if (userRepository.existsByUsername(dto.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        Role staffRole = roleRepository.findByName("ROLE_STAFF")
+                .orElseThrow(() -> new RuntimeException("ROLE_STAFF not found"));
+
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        user.setRoles(Set.of(staffRole));
+
+        return toDTO(userRepository.save(user));
+    }
+
+
+    /// ADMIN ENDPOINT - PROMOTE USER TO ADMIN
+    public void promoteToAdmin(Integer userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Role adminRole = roleRepository.findByName("ROLE_ADMIN")
+                .orElseThrow(() -> new RuntimeException("ROLE_ADMIN not found"));
+
+        user.getRoles().add(adminRole);
+    }
+
+
     // GET ALL USERS
     @Transactional(readOnly = true)
     public List<UserDTO> getAllUsers() {
