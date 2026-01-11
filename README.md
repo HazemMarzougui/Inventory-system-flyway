@@ -92,7 +92,7 @@ Adding description to Product or new tables.
 
 ## ⚙️ Setup & Installation
 
-```bash
+bash
 # Clone repository
 git clone https://github.com/HazemMarzougui/inventory-management-system.git
 cd inventory-management-system
@@ -148,12 +148,19 @@ GET	/api/stock-movements	Get all stock movements
 Use Postman to test endpoints. Sample payloads are in examples/.
 
 🧪 Testing
-Open Postman
+## API Testing (Postman)
 
-Import InventoryManagementSystem.postman_collection.json (optional)
+This project includes a ready-to-use Postman collection.
 
-Test endpoints for Product, Supplier, Warehouse, StockMovement
+📁 Location:
+postman/Inventory-API.postman_collection.json
 
+### How to use:
+1. Import collection into Postman
+2. Set environment variables:
+   - admin_token
+   - staff_token
+3. Run requests in order (Auth → Products → Warehouses → Stock)
 🌟 Future Improvements
 Add DTOs and validation
 
@@ -174,14 +181,11 @@ Push: git push origin feature/your-feature
 
 Open a Pull Request
 
+
+
 📜 License
 This project is licensed under the MIT License.
 
 yaml
 Copier le code
 
----
-
-If you want, I can also make it **even fancier with emojis in headers, collapsible sections for API endpoints, and badges for build status or coverage**, so it looks very professional on GitHub.  
-
-Do you want me to do that next?
