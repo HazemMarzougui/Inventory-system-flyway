@@ -2,6 +2,7 @@ package com.example.invertorymanagementsystem.Controllers;
 
 import com.example.invertorymanagementsystem.Dtos.UserDTO;
 import com.example.invertorymanagementsystem.Services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UserController {
 
     // CREATE USER
     @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO dto) {
+    public UserDTO createUser(@Valid  @RequestBody UserDTO dto) {
         return userService.createUser(dto);
     }
 

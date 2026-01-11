@@ -2,6 +2,7 @@ package com.example.invertorymanagementsystem.Controllers;
 
 import com.example.invertorymanagementsystem.Dtos.ProductDTO;
 import com.example.invertorymanagementsystem.Services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +32,13 @@ public class ProductController {
 
     // CREATE
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO dto) {
         return ResponseEntity.ok(productService.createProduct(dto));
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(
+    public ResponseEntity<ProductDTO> updateProduct(@Valid
             @PathVariable Integer id,
             @RequestBody ProductDTO dto) {
 

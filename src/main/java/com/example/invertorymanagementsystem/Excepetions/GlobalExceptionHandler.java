@@ -16,7 +16,6 @@ import java.util.Map;
 @ControllerAdvice /* this is the key annotation for intercepting the expection automatically
 , so services search look for this class when an exception is thrown */
 public class GlobalExceptionHandler {
-
     // 1. Handle Business Logic Errors (thrown manually in Services)
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponseDTO> handleBusinessErrors(RuntimeException ex, WebRequest request) {

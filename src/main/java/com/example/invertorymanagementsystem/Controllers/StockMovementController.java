@@ -1,5 +1,6 @@
 package com.example.invertorymanagementsystem.Controllers;
 import com.example.invertorymanagementsystem.Dtos.StockMovementDTO;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.example.invertorymanagementsystem.Services.StockMovementService;
 @RestController
@@ -13,7 +14,7 @@ public class StockMovementController {
     }
 
     @PostMapping
-    public StockMovementDTO createMovement(@RequestBody StockMovementDTO dto) {
+    public StockMovementDTO createMovement(@Valid @RequestBody StockMovementDTO dto) {
         return stockMovementService.createMovement(dto);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.invertorymanagementsystem.Controllers;
 import com.example.invertorymanagementsystem.Dtos.WarehouseDTO;
 import com.example.invertorymanagementsystem.Services.WarehouseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +26,12 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public WarehouseDTO createWarehouse(@RequestBody WarehouseDTO dto) {
+    public WarehouseDTO createWarehouse(@Valid  @RequestBody WarehouseDTO dto) {
         return warehouseService.createWarehouse(dto);
     }
 
     @PutMapping("/{id}")
-    public WarehouseDTO updateWarehouse(
+    public WarehouseDTO updateWarehouse(@Valid
             @PathVariable Integer id,
             @RequestBody WarehouseDTO dto) {
         return warehouseService.updateWarehouse(id, dto);
