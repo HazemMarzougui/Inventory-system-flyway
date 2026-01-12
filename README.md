@@ -29,3 +29,28 @@ Inventory Management System is a Spring Boot application for managing products, 
 ---
 
 ## 🏗️ Architecture
+
+**Entities**: Domain objects mapped to database tables  
+**Repositories**: Database access using Spring Data JPA  
+**Services**: Business logic layer  
+**Controllers**: REST API endpoints  
+**Flyway scripts**: Versioned SQL migrations
+
+---
+
+## 🚀 Getting Started
+
+### ✅ Prerequisites
+Ensure you have the following installed:
+- Java Development Kit (JDK) 17 or higher
+- Maven 3.x
+- MySQL 8.0 or higher
+- Git
+- Postman (for API testing)
+
+### 📥 Installation
+
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/HazemMarzougui/Inventory-system-flyway.git
+cd Inventory-system-flyway
