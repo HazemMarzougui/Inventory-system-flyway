@@ -41,33 +41,30 @@ It uses **Flyway for database versioning**, **JWT for security**, and provides r
 
 ## 🛠️ Technologies
 
-| Layer      | Technology                         |
-|------------|-----------------------------------|
-| Backend    | Java 17, Spring Boot 4.0.1        |
-| Database   | MySQL 8.0                         |
-| DB Versioning | Flyway                        |
-| Security   | Spring Security + JWT             |
-| Build Tool | Maven                             |
-| Testing    | Postman                           |
+| Layer          | Technology                        |
+|----------------|-----------------------------------|
+| Backend        | Java 17, Spring Boot 4.0.1        |
+| Database       | MySQL 8.0                         |
+| DB Versioning  | Flyway                            |
+| Security       | Spring Security + JWT             |
+| Build Tool     | Maven                             |
+| Testing        | Postman                           |
 
 ---
 
 ## 🏗️ Architecture
 Inventory Management System
 ├── Entities
-│ ├── Product
-│ ├── Supplier
-│ ├── Warehouse
-│ └── StockMovement
+│   ├── Product
+│   ├── Supplier
+│   ├── Warehouse
+│   └── StockMovement
 ├── Repositories
 ├── Services
 ├── Controllers
 └── Resources
 └── db/migration (Flyway SQL scripts)
-
-text
-
-- **Entities**: Domain objects mapped to database tables  
+text- **Entities**: Domain objects mapped to database tables  
 - **Repositories**: Database access (Spring Data JPA)  
 - **Services**: Business logic  
 - **Controllers**: REST API endpoints  
@@ -102,14 +99,10 @@ Flyway manages database schema changes automatically on startup.
 ```bash
 git clone https://github.com/HazemMarzougui/Inventory-system-flyway.git
 cd Inventory-system-flyway
-```
 2️⃣ Configure MySQL
-sql
-CREATE DATABASE inventory_system;
+SQLCREATE DATABASE inventory_system;
 Update src/main/resources/application.properties:
-
-properties
-spring.datasource.url=jdbc:mysql://localhost:3306/inventory_system?useSSL=false&serverTimezone=UTC
+propertiesspring.datasource.url=jdbc:mysql://localhost:3306/inventory_system?useSSL=false&serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password=your_password
 
@@ -119,95 +112,201 @@ spring.jpa.show-sql=true
 # JWT settings
 jwt.secret=your_secret_key_here
 jwt.expirationMs=86400000
+
 🚀 Running the Application
-bash
-mvn clean install
+Bashmvn clean install
 mvn spring-boot:run
 Application will run at: http://localhost:8080
 
 📡 API Endpoints
 Auth
-Method	Endpoint	Description
-POST	/api/auth/register	Register new STAFF user
-POST	/api/auth/login	Login and get JWT token
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MethodEndpointDescriptionPOST/api/auth/registerRegister new STAFF userPOST/api/auth/loginLogin and get JWT token
 Products
-Method	Endpoint	Description
-POST	/api/products	Create product
-GET	/api/products	List all products
-GET	/api/products/{id}	Get product by ID
-PUT	/api/products/{id}	Update product
-DELETE	/api/products/{id}	Delete product
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MethodEndpointDescriptionPOST/api/productsCreate productGET/api/productsList all productsGET/api/products/{id}Get product by IDPUT/api/products/{id}Update productDELETE/api/products/{id}Delete product
 Suppliers
-Method	Endpoint	Description
-POST	/api/suppliers	Create supplier
-GET	/api/suppliers	List suppliers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MethodEndpointDescriptionPOST/api/suppliersCreate supplierGET/api/suppliersList suppliers
 Warehouses
-Method	Endpoint	Description
-POST	/api/warehouses	Create warehouse
-GET	/api/warehouses	List warehouses
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MethodEndpointDescriptionPOST/api/warehousesCreate warehouseGET/api/warehousesList warehouses
 Stock Movements
-Method	Endpoint	Description
-POST	/api/stock-movements	Add stock movement
-GET	/api/stock-movements	List stock movements
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MethodEndpointDescriptionPOST/api/stock-movementsAdd stock movementGET/api/stock-movementsList stock movements
 Inventory Snapshot
-Method	Endpoint	Description
-GET	/api/inventory/stock-levels	Get all stock levels
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MethodEndpointDescriptionGET/api/inventory/stock-levelsGet all stock levels
 Protected endpoints require Bearer {{admin_token}} or {{staff_token}} depending on RBAC.
 
 🧪 Testing
 🧰 API Testing (Postman)
-This project includes a ready‑to‑use Postman collection.
-
-📁 Location:
-
-text
-postman/Inventory-API.postman_collection.json
+This project includes a ready-to-use Postman collection.
+Location:
+textpostman/Inventory-API.postman_collection.json
 How to use:
 
 Open Postman
-
-Import the collection above
-
+Import the collection
 Set environment variables:
-
 admin_token
-
 staff_token
 
 Run requests in this order:
-
 Auth → Products → Warehouses → Suppliers → Stock Movements → Snapshot
 
-Run the RBAC tests (Staff vs Admin) to confirm security.
+Run the RBAC tests (Staff vs Admin) to confirm security
+
 
 🌟 Future Improvements
+
 Add frontend (Angular or React)
-
 Detailed integration tests (Testcontainers)
-
 Improved error handling & logging
-
 Pagination & filtering on GET endpoints
+
 
 🤝 Contributing
 You're welcome to contribute improvements.
-
 To contribute:
 
 Fork the repository
-
 Make your changes locally
-
 Commit with a clear message:
 
-bash
-git add .
+Bashgit add .
 git commit -m "Describe your changes"
+
 Push to your fork:
 
-bash
-git push origin main
+Bashgit push origin main
+
 Open a Pull Request against this repo
 
+
 📜 License
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
