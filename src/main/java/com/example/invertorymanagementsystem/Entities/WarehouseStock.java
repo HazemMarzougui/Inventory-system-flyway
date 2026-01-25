@@ -28,6 +28,10 @@ public class WarehouseStock {
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
 
+    @Version
+    @Column(nullable = false)
+    private Integer version;
+
     // Helper constructor for the Service layer
     public WarehouseStock(Integer productId, Integer warehouseId, Integer availableQuantity) {
         this.productId = productId;
