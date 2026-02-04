@@ -1,6 +1,6 @@
 package com.example.invertorymanagementsystem;
 
-import com.example.invertorymanagementsystem.Dtos.UserDTO;
+import com.example.invertorymanagementsystem.dtos.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

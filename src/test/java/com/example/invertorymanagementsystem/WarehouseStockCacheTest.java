@@ -1,11 +1,11 @@
 package com.example.invertorymanagementsystem;
 
-import com.example.invertorymanagementsystem.Dtos.StockMovementDTO;
-import com.example.invertorymanagementsystem.Entities.Product;
-import com.example.invertorymanagementsystem.Entities.Warehouse;
-import com.example.invertorymanagementsystem.Repositories.ProductRepository;
-import com.example.invertorymanagementsystem.Repositories.WarehouseRepository;
-import com.example.invertorymanagementsystem.Services.StockMovementService;
+import com.example.invertorymanagementsystem.dtos.StockMovementDTO;
+import com.example.invertorymanagementsystem.entities.Product;
+import com.example.invertorymanagementsystem.entities.Warehouse;
+import com.example.invertorymanagementsystem.repositories.ProductRepository;
+import com.example.invertorymanagementsystem.repositories.WarehouseRepository;
+import com.example.invertorymanagementsystem.services.StockMovementService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
