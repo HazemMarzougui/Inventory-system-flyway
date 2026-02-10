@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 dependency-check-suppressions.xml
+.env
+/src/main/resources/application.properties
+docker-compose.yml
+
 
 ### STS ###
 .apt_generated

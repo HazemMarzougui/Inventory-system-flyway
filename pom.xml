@@ -26,7 +26,6 @@
 		<!-- Dependency Versions -->
 		<testcontainers.version>1.19.3</testcontainers.version>
 		<mysql.version>8.2.0</mysql.version>
-		<netty.version>4.1.108.Final</netty.version>
 		<jackson.version>2.16.1</jackson.version>
 
 
@@ -147,6 +146,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
 

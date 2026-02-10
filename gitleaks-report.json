@@ -1,0 +1,23 @@
+[
+ {
+  "RuleID": "generic-api-key",
+  "Description": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+  "StartLine": 17,
+  "EndLine": 17,
+  "StartColumn": 2,
+  "EndColumn": 48,
+  "Match": "jwt.secret.key=REMOVED",
+  "Secret": "REMOVED",
+  "File": "src/main/resources/application.properties",
+  "SymlinkFile": "",
+  "Commit": "1a74c50634759452b844be017f47f2575d6b74bb",
+  "Link": "https://github.com/HazemMarzougui/Inventory-system-flyway/blob/1a74c50634759452b844be017f47f2575d6b74bb/src/main/resources/application.properties#L17",
+  "Entropy": 3.8278196,
+  "Author": "Hazem Marzougui",
+  "Email": "hazem.marzougui@esprit.tn",
+  "Date": "2026-01-11T23:53:09Z",
+  "Message": "Enhance security and add Postman testing\n\n- Rename V2 and V3 Flyway migrations for consistency\n- Add @EnableWebSecurity annotation in SecurityConfig\n- Implement JWT utils and authentication filter\n- Add AuthService, AuthController, AdminController, LoginRequest DTO\n- Add Postman collection for API testing\n- Add JWT secrets in application.properties\n- Update README with Postman usage instructions",
+  "Tags": [],
+  "Fingerprint": "1a74c50634759452b844be017f47f2575d6b74bb:src/main/resources/application.properties:generic-api-key:17"
+ }
+]
