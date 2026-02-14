@@ -30,8 +30,8 @@
 
 
 		<!-- SonarQube Configuration -->
-		<sonar.projectKey>inventory-management-system</sonar.projectKey>
-		<sonar.projectName>Inventory Management System</sonar.projectName>
+		<sonar.projectKey>InventoryManagementSystem</sonar.projectKey>
+		<sonar.projectName>InventoryManagementSystem</sonar.projectName>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 
@@ -338,7 +338,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.0</minimum>
+											<minimum>0.2</minimum>
 										</limit>
 									</limits>
 								</rule>
