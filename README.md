@@ -16,7 +16,7 @@ Repository: **Inventory-system-flyway**
 
 * 🔐 **Authentication & Authorization**
 
-  * JWT-based authentication
+  * JWT-based authentication 
   * Role-Based Access Control (RBAC): `ADMIN`, `STAFF`
   * Method-level security with `@PreAuthorize`
 
